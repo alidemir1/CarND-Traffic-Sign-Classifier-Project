@@ -1,37 +1,43 @@
 ## Project: Build a Traffic Sign Recognition Program
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-Overview
----
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then try out your model on images of German traffic signs that you find on the web.
+## Design and Test a Model Architecture
 
-We have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). 
+### Preprocessing
+As preprocessing steps;
+* Normalization is applied by (pixel_values - 127.0 / 128.0)
 
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
+### Model Architecture
+LeNet-V5 is used as the model architecture. It has been made some modifications on the network. Number of filters are increased from 6 to 12 and dropout layers are added after convolutional layers.
 
-To meet specifications, the project will require submitting three files: 
-* the Ipython notebook with the code
-* the code exported as an html file
-* a writeup report either as a markdown or pdf file 
+### Model Training and Solution Approach
+In order to get >=0.93 accuracy on the validation set;
+* Keep_probability for dropout layers is set to 0.4 to prevent overfitting on training data. Because it is observed in first few trials.
+* Learning Rate is set to 0.003 initially.
+* Learning rate is decreased in each epoch (after 5th Epoch) by factor of 1.04 in order to keep learning alive and not to stuck in some worse local minima in the parameter space.
+* Training is stop once >0.930 accuracy is observed on validation set.
+* After training is completed, evaluation on the test set is performed. Accuracy of the test set is reported as 0.918. 
 
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/481/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
+### Test a Model on New Images
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+[image1]: ./german_signs/road_sign1.jpeg "1"
+[image2]: ./german_signs/road_sign2.jpeg "2"
+[image3]: ./german_signs/road_sign3.jpg "3"
+[image4]: ./german_signs/road_sign4.jpeg "4"
+[image5]: ./german_signs/road_sign5.jpg "5"
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
+5 different images are gathered from web. Prediction is performed on these images, accuracy of prediction on these 5 images is 0.60.
+Prediction for each image is illustrated below. Top - 5 prediction can be seen on [Traffic_Sign_Classifier.html](./Traffic_Sign_Classifier.html)
 
-The Project
----
-The goals / steps of this project are the following:
-* Load the data set
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+Priority Road     |Right-of-way at the next Intersection        |   Wild Animals Crossing            |  Speed Limit (50km/h)        |  Wild Animals Crossing 
+:----------------:|:-------------------------:|:------------------------:|:-------------------------:|:-------------------------:
+![1][image1]      |  ![2][image2]             |    ![3][image3]          |  ![4][image4]             |  ![5][image5]
+
+### Discussion 
+According top - 5 predictions on new images gathered from the web;
+* According to top - 5 predictions accuracy of the network is 0.8
+* Network seems to be confused on animal and human figures. More samples (data) might be helpful for network to better generalize.
+* Predictions of speed limit 50 image, 4 predictions belong to the different speed limits and just one of the prediction says no vehicle. Network performed good results on this image and I think if I put it on different trials on the speed limits, it will generalize nicely.
 
 ### Dependencies
 This lab requires:
@@ -49,10 +55,4 @@ git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
 cd CarND-Traffic-Sign-Classifier-Project
 jupyter notebook Traffic_Sign_Classifier.ipynb
 ```
-
-### Requirements for Submission
-Follow the instructions in the `Traffic_Sign_Classifier.ipynb` notebook and write the project report using the writeup template as a guide, `writeup_template.md`. Submit the project code and writeup document.
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
